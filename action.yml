@@ -1,6 +1,6 @@
 # action.yml
-name: 'GitHub Release Monitor'
-description: 'Monitors GitHub releases of the monitored_repo, comparing expected version to released version using semver (ignore pre-release and drafts)'
+name: 'GitHub Release to Issue'
+description: 'Monitors GitHub releases (using semver), and creates an issue in any other repo.'
 inputs:
   repo:
     description: "Monitored repo, in the form org/repo (org may be a user)"
