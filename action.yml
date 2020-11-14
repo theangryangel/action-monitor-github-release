@@ -1,5 +1,8 @@
 # action.yml
 name: 'GitHub Release to Issue'
+branding:
+  icon: 'bell'
+  color: 'blue'
 description: 'Monitors GitHub releases (using semver), and creates an issue in any other repo.'
 inputs:
   repo:
