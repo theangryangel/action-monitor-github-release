@@ -1,0 +1,35 @@
+# action.yml
+name: 'GitHub Release Monitor'
+description: 'Monitors GitHub releases of the monitored_repo, comparing expected version to released version using semver (ignore pre-release and drafts)'
+inputs:
+  repo:
+    description: "Monitored repo, in the form org/repo (org may be a user)"
+    required: True
+
+  version:
+    description: "Current version"
+    required: True
+
+  constraint:
+    description: "An optional constraint, if you need to limit the releases considered. i.e. <4.0.0"
+    required: False
+
+  max_age:
+    description: "How many days to consider on the feed. If you run this action on a schedule you probably want this to match."
+    required: True
+
+  target_repo:
+    description: "Repo to create an issue in, in the form org/repo"
+    required: True
+
+  labels:
+    description: "Optional labels, comma separated"
+    required: False
+outputs:
+  release_url:
+    description: "Release API URL"
+  issue_url: 
+    description: "Created issue API URL"
+runs:
+  using: 'node12'
+  main: 'index.js'
