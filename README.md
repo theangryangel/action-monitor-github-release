@@ -10,6 +10,9 @@ Useful for things where dependabot does not yet understand.
 
 ## Inputs
 
+### `token`
+**Required** GitHub token
+
 ### `repo`
 
 **Required** Monitored repo, in the form org/repo (org may be a user).
@@ -22,9 +25,6 @@ Optional constraint to place on the comparison. i.e. if you are pinned to an old
 
 ### `max_age`
 **Required** How many days to consider on the feed. If you are running this action on a schedule you want this to match the interval.
-
-### `target_repo`
-**Required** Repo you want to make an issue against, in the form org/repo (org may be a user).
 
 ### `labels`
 Optional labels to use on the created issue, comma separated.

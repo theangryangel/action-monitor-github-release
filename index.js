@@ -14,7 +14,6 @@ try {
   const days = core.getInput('max_age');
   const limit = dayjs().utc().subtract(days, 'day');
   const labels = (core.getInput('labels') || '').split(',');
-  const target = core.getInput('target_repo').split('/');
 
   const octokit = github.getOctokit(token);
 
@@ -56,8 +55,7 @@ try {
     core.setOutput('release_url', release.url);
 
     octokit.issues.create({
-      owner: target[0],
-      repo: target[1],
+      ...github.context.repo,
       title: `${repo[0]}/${repo[1]} ${release.tag_name}`,
       body: release.body,
       labels,
