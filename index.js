@@ -22,13 +22,14 @@ try {
     repo: repo[1],
   }).then((releases) => {
     for (const release of releases.data) {
-      if (limit.isBefore(dayjs(release.published_at))) {
-        console.log('skipping by date', release.id);
+      const date = dayjs(release.published_at);
+      if (date.isBefore(limit)) {
+        console.log('skipping by date', release.id, date, limit);
         continue;
       }
 
       if (release.draft || release.prerelease) {
-        console.log('skipping pre-release');
+        console.log('skipping pre-release', release.id);
         continue;
       }
 
@@ -39,7 +40,7 @@ try {
       }
 
       if (constraint && !semver.satisfies(release_ver, constraint)) {
-        console.log('skipping, does not satisfy constraint', release_ver, constraint);
+        console.log('skipping, does not satisfy constraint', release.id, release_ver, constraint);
         continue;
       }
 
