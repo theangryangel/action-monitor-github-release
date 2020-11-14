@@ -38,6 +38,10 @@ It will simply replace the plus with a hyphen at this time.
 
 ## Outputs
 
+### `release_id`
+
+ID of the release
+
 ### `release_url`
 
 API URL to the release
@@ -46,12 +50,25 @@ API URL to the release
 
 API URL to the created issue
 
+### `issue_id`
+
+ID of the issue
+
 ## Example usage
 
-uses: actions/action-monitor-github-release@v1.0
+```
+uses: actions/action-monitor-github-release@v1.5
 with:
   repo: 'gravitation/teleport'
   version: '4.0.0'
   max_age: 1
-  target_repo: 'your/repo'
   labels: "release,teleport"
+```
+
+## How to release this action
+
+1. Hack
+2. Run `npm run release`
+3. Bump package.json
+4. `git tag version`
+5. Push and create release

@@ -1,10 +1,11 @@
 {
   "name": "action-monitor-release",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "ncc build src/monitor-release.js && git add -f dist/"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "semver": "^7.3.2"
   },
   "devDependencies": {
+    "@vercel/ncc": "^0.25.1",
     "eslint": "^7.13.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-base": "^14.2.1",
