@@ -6,14 +6,23 @@ const utc = require('dayjs/plugin/utc');
 
 dayjs.extend(utc);
 
+function coerce_metadata(string) {
+  return string.replace("+", "-");
+}
+
 try {
   const token = core.getInput('token');
   const repo = core.getInput('repo').split('/');
-  const expected = core.getInput('version');
+  let expected = core.getInput('version');
   const constraint = core.getInput('constraint');
-  const days = core.getInput('max_age');
-  const limit = dayjs().utc().subtract(days, 'day');
+  const days = parseInt(core.getInput('max_age'), 10);
+  const limit = dayjs().utc().subtract(days, 'days');
   const labels = (core.getInput('labels') || '').split(',');
+  const coerce = core.getInput('coerce_release_label');
+
+  if (coerce) {
+    expected = coerce_metadata(expected);
+  }
 
   const octokit = github.getOctokit(token);
 
@@ -22,36 +31,48 @@ try {
     repo: repo[1],
   }).then((releases) => {
     for (const release of releases.data) {
+
+      console.log(release.tag_name);
+
       const date = dayjs(release.published_at);
       if (date.isBefore(limit)) {
-        console.log('skipping by date', release.id, date, limit);
+        console.log('skipping by date', release.tag_name, date.format(), limit.format());
         continue;
       }
 
       if (release.draft || release.prerelease) {
-        console.log('skipping pre-release', release.id);
+        console.log('skipping pre-release', release.tag_name);
         continue;
       }
 
-      const release_ver = semver.clean(release.tag_name);
+      let release_ver = release.tag_name.replace(/^v/, "");
+
+      if (coerce) {
+        release_ver = coerce_metadata(release_ver);
+      }
+
       if (!semver.valid(release_ver)) {
         console.log('invalid tag', release.tag_name);
         continue;
       }
 
       if (constraint && !semver.satisfies(release_ver, constraint)) {
-        console.log('skipping, does not satisfy constraint', release.id, release_ver, constraint);
+        console.log('skipping, does not satisfy constraint', release.tag_name, release_ver, constraint);
         continue;
       }
 
       if (semver.gt(release_ver, expected)) {
         return release;
       }
+
+      console.log("skipped", release.tag_name, release_ver);
     }
   }).then((release) => {
     if (!release) {
       return;
     }
+
+    console.log("creating release", release.tag_name);
 
     core.setOutput('release_url', release.url);
 

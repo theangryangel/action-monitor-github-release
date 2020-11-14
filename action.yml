@@ -28,6 +28,10 @@ inputs:
   token:
     description: "GitHub token"
     required: True
+
+  coerce_release_label:
+    description: "Attempt to covert the release metadata into the label. For releases such as k3s which release in the format 1.19.2+k3s2 this allows you to consider the metadata as part of the version."
+    required: False
 outputs:
   release_url:
     description: "Release API URL"

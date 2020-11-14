@@ -29,6 +29,13 @@ Optional constraint to place on the comparison. i.e. if you are pinned to an old
 ### `labels`
 Optional labels to use on the created issue, comma separated.
 
+### `coerce_release_label`
+Optionally coerce the release label.
+
+This is useful in scenarios where a release may have a tag (i.e. rancher/k3s tags like 1.19.3+k3s2), which you wish to compare.
+By default the metadata is not considered by semver, but you do wish to.
+It will simply replace the plus with a hyphen at this time.
+
 ## Outputs
 
 ### `release_url`
